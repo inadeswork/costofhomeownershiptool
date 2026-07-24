@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Home Buying Cost Tracker | Ade's Work</title>
+<style>body{margin:0;background:#fffdfb;padding:28px 18px;}</style>
+</head>
+<body>
+<style>
+@import url('https://fonts.cdnfonts.com/css/aileron');
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700&display=swap');
+
+.awc{--wine:#410C1E;--gold:#937B25;--rose:#D8A48F;--cream:#FFECD7;--ink:#2b2726;
+  --line:rgba(65,12,30,.16);--p:1.1rem;
+  font-family:'Aileron',-apple-system,BlinkMacSystemFont,'Helvetica Neue',Arial,sans-serif;
+  color:var(--ink);font-size:var(--p);line-height:1.55;max-width:900px;margin:0 auto;-webkit-font-smoothing:antialiased;}
+.awc *{box-sizing:border-box;}
+.awc h2,.awc h3,.awc .title{font-family:'Playfair Display',Georgia,serif;color:var(--wine);font-weight:600;}
+.awc .title{font-size:clamp(28px,4vw,40px);line-height:1.1;margin:0 0 .1em;}
+.awc .subtitle{font-style:italic;color:var(--gold);font-family:'Playfair Display',Georgia,serif;font-size:19px;margin:0 0 1.4em;}
+
+.awc .panel{border:1px solid var(--line);border-radius:8px;padding:22px 24px;margin:0 0 22px;}
+.awc .panel h3{font-size:20px;margin:0 0 14px;padding-bottom:10px;border-bottom:1px solid var(--line);}
+.awc .grid{display:grid;grid-template-columns:1fr 1fr;gap:14px 24px;}
+@media(max-width:620px){.awc .grid{grid-template-columns:1fr;}}
+.awc .field{display:flex;flex-direction:column;gap:5px;}
+.awc .field label{font-size:13.5px;font-weight:600;color:#4a3f3b;letter-spacing:.01em;}
+.awc .field .hint{font-size:12px;color:#9a8f8a;font-style:italic;}
+.awc .inp{position:relative;display:flex;align-items:center;}
+.awc .inp .pre{position:absolute;left:12px;color:#9a8f8a;font-size:15px;pointer-events:none;}
+.awc .inp .suf{position:absolute;right:12px;color:#9a8f8a;font-size:15px;pointer-events:none;}
+.awc input[type=number]{width:100%;padding:11px 12px 11px 26px;border:1px solid var(--line);border-radius:6px;
+  font-family:inherit;font-size:16px;color:var(--ink);background:#fff;-moz-appearance:textfield;}
+.awc input.pcttail{padding-right:30px;}
+.awc input:focus{outline:none;border-color:var(--gold);box-shadow:0 0 0 2px rgba(147,123,37,.15);}
+.awc input::-webkit-outer-spin-button,.awc input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0;}
+.awc .checks{display:flex;flex-wrap:wrap;gap:18px;margin-top:6px;}
+.awc .chk{display:flex;align-items:center;gap:8px;font-size:14px;font-weight:600;color:#4a3f3b;cursor:pointer;}
+.awc .chk input{width:17px;height:17px;accent-color:var(--wine);}
+
+/* dashboard */
+.awc .dash-title{font-family:'Playfair Display',Georgia,serif;color:var(--wine);font-weight:600;font-size:24px;margin:6px 0 4px;}
+.awc .dash-sub{font-size:13.5px;color:#8a7f7a;margin:0 0 16px;}
+.awc .tiles{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:16px;}
+@media(max-width:620px){.awc .tiles{grid-template-columns:1fr;}}
+/* info tiles (cash + monthly) — soft beige */
+.awc .tile{background:rgba(255,236,215,.6);color:var(--ink);border:1px solid rgba(147,123,37,.28);border-radius:10px;padding:18px 20px 16px;}
+.awc .tile .lbl{font-size:13.5px;color:#6a5f5b;margin-bottom:8px;line-height:1.35;}
+.awc .tile .val{font-family:'Aileron',sans-serif;font-size:33px;font-weight:800;line-height:1;color:var(--wine);letter-spacing:-.01em;}
+.awc .tile .note{font-size:12.5px;color:#7a6f6a;margin-top:8px;}
+/* disposable-income signal tile: gold when positive, red when negative */
+.awc .tile.good{background:rgba(147,123,37,.16);border-color:rgba(147,123,37,.5);}
+.awc .tile.good .val{color:#6f5d10;}
+.awc .tile.tight{background:rgba(216,164,143,.3);border-color:rgba(216,164,143,.65);}
+.awc .tile.tight .val{color:#8a5330;}
+.awc .tile.bad{background:rgba(150,26,40,.16);border-color:rgba(150,26,40,.45);}
+.awc .tile.bad .val{color:#7a1420;}
+
+.awc .strip{display:flex;flex-wrap:wrap;gap:10px 26px;align-items:baseline;background:var(--cream);border-radius:8px;padding:14px 18px;margin-bottom:20px;}
+.awc .strip .item{font-size:14.5px;color:#4a3f3b;}
+.awc .strip .item b{color:var(--wine);font-weight:700;}
+
+.awc .warn{border-left:4px solid #a85f3f;background:rgba(216,164,143,.18);color:#7a3b23;border-radius:0 6px 6px 0;padding:12px 16px;font-size:15px;margin-bottom:20px;}
+.awc .warn.hidden{display:none;}
+
+.awc .breakdowns{display:grid;grid-template-columns:1fr 1fr;gap:24px;}
+@media(max-width:620px){.awc .breakdowns{grid-template-columns:1fr;}}
+.awc .bd h4{font-family:'Playfair Display',Georgia,serif;color:var(--wine);font-size:18px;font-weight:600;margin:0 0 8px;}
+.awc .bd .row{display:flex;justify-content:space-between;gap:12px;padding:7px 0;border-bottom:1px solid var(--line);font-size:1rem;}
+.awc .bd .row:last-child{border-bottom:none;}
+.awc .bd .row:nth-last-child(2){border-bottom:none;}
+.awc .bd .row.total{font-weight:700;color:var(--wine);border-top:2px solid var(--wine);border-bottom:none;margin-top:2px;padding-top:10px;}
+.awc .bd .row span:last-child{font-variant-numeric:tabular-nums;white-space:nowrap;}
+.awc .muted{color:#9a8f8a;}
+
+.awc .disclaimer{font-size:12px;color:#9a8f8a;line-height:1.5;margin-top:22px;border-top:1px solid var(--line);padding-top:14px;}
+</style>
+
+<div class="awc">
+  <div class="title">Beyond the Down Payment</div>
+  <div class="subtitle">The true cost of buying a home in Ontario.</div>
+
+  <div class="panel">
+    <h3>The Home &amp; Your Mortgage</h3>
+    <div class="grid">
+      <div class="field"><label>Purchase price</label><div class="inp"><span class="pre">$</span><input type="number" id="awc-price" value="800000" min="0" step="1000"></div></div>
+      <div class="field"><label>Down payment</label><div class="inp"><span class="pre">$</span><input type="number" id="awc-down" value="80000" min="0" step="1000"></div><span class="hint" id="awc-downhint"></span></div>
+      <div class="field"><label>Interest rate</label><div class="inp"><span class="pre" style="left:auto;right:12px">%</span><input class="pcttail" style="padding-left:12px" type="number" id="awc-rate" value="4.5" min="0" step="0.05"></div></div>
+      <div class="field"><label>Amortization (years)</label><div class="inp"><input style="padding-left:12px" type="number" id="awc-amort" value="25" min="1" max="30" step="1"></div></div>
+    </div>
+    <div class="checks">
+      <label class="chk"><input type="checkbox" id="awc-ftb" checked> First-time buyer</label>
+      <label class="chk"><input type="checkbox" id="awc-tor"> Buying in the City of Toronto</label>
+    </div>
+  </div>
+
+  <div class="panel">
+    <h3>Monthly Carrying Costs</h3>
+    <div class="grid">
+      <div class="field"><label>Property tax (per year)</label><div class="inp"><span class="pre">$</span><input type="number" id="awc-tax" value="5500" min="0" step="100"></div></div>
+      <div class="field"><label>Home insurance (per year)</label><div class="inp"><span class="pre">$</span><input type="number" id="awc-ins" value="1500" min="0" step="50"></div></div>
+      <div class="field"><label>Condo / maintenance fees (per month)</label><div class="inp"><span class="pre">$</span><input type="number" id="awc-condo" value="0" min="0" step="25"></div></div>
+      <div class="field"><label>Utilities (per month)</label><div class="inp"><span class="pre">$</span><input type="number" id="awc-util" value="300" min="0" step="25"></div></div>
+      <div class="field"><label>Maintenance reserve (per month)</label><div class="inp"><span class="pre">$</span><input type="number" id="awc-maint" value="667" min="0" step="25" data-auto="1"></div><span class="hint">Auto ~1% of price per year. Edit to override.</span></div>
+    </div>
+  </div>
+
+  <div class="panel">
+    <h3>One-Time Costs <span style="font-family:'Aileron';font-size:13px;font-weight:400;color:#9a8f8a;font-style:italic">(estimates you can adjust)</span></h3>
+    <div class="grid">
+      <div class="field"><label>Legal fees</label><div class="inp"><span class="pre">$</span><input type="number" id="awc-legal" value="1800" min="0" step="50"></div></div>
+      <div class="field"><label>Title insurance</label><div class="inp"><span class="pre">$</span><input type="number" id="awc-title" value="350" min="0" step="25"></div></div>
+      <div class="field"><label>Home inspection</label><div class="inp"><span class="pre">$</span><input type="number" id="awc-insp" value="500" min="0" step="25"></div></div>
+      <div class="field"><label>Appraisal</label><div class="inp"><span class="pre">$</span><input type="number" id="awc-appr" value="400" min="0" step="25"></div></div>
+      <div class="field"><label>Moving costs</label><div class="inp"><span class="pre">$</span><input type="number" id="awc-move" value="1500" min="0" step="50"></div></div>
+      <div class="field"><label>Initial repairs &amp; setup</label><div class="inp"><span class="pre">$</span><input type="number" id="awc-repair" value="8000" min="0" step="100" data-auto="1"></div><span class="hint">Auto-set to ~1% of price. Edit to override.</span></div>
+    </div>
+  </div>
+
+  <div class="panel">
+    <h3>Your Monthly Budget</h3>
+    <div class="grid">
+      <div class="field"><label>Your monthly take-home income</label><div class="inp"><span class="pre">$</span><input type="number" id="awc-income" value="9500" min="0" step="100"></div><span class="hint">Combined, after tax.</span></div>
+      <div class="field"><label>Other monthly expenses</label><div class="inp"><span class="pre">$</span><input type="number" id="awc-other" value="2500" min="0" step="50"></div><span class="hint">Food, car, rent, debts, travel, entertainment.</span></div>
+    </div>
+  </div>
+
+  <div class="dash-title">Your Reality Check</div>
+  <div class="dash-sub">The numbers a mortgage pre-approval won't show you.</div>
+
+  <div class="tiles">
+    <div class="tile"><div class="lbl">💰 Cash you'll need before closing</div><div class="val" id="awc-out-cash">$0</div></div>
+    <div class="tile"><div class="lbl">🏠 Estimated monthly cost of owning</div><div class="val" id="awc-out-month">$0</div></div>
+    <div class="tile" id="awc-tile-disp"><div class="lbl" id="awc-disp-lbl">💵 Monthly disposable income left</div><div class="val" id="awc-out-disp">$0</div><div class="note" id="awc-disp-note"></div></div>
+  </div>
+
+  <div class="strip">
+    <div class="item">📈 Recommended emergency fund after moving: <b id="awc-out-emerg">$0</b></div>
+    <div class="item muted">A cushion of about 3 months of ownership costs.</div>
+  </div>
+
+  <div class="warn hidden" id="awc-warn"></div>
+
+  <div class="breakdowns">
+    <div class="bd">
+      <h4>Cash Needed Before Closing</h4>
+      <div id="awc-bd-cash"></div>
+    </div>
+    <div class="bd">
+      <h4>Monthly Cost of Owning</h4>
+      <div id="awc-bd-month"></div>
+    </div>
+  </div>
+
+  <p class="disclaimer">Estimates only, for planning purposes, based on Ontario rules as of 2026 (land transfer tax brackets, first-time buyer rebate up to $4,000, and mortgage default insurance premiums with 8% Ontario PST payable in cash when your down payment is under 20%). Actual costs vary by lender, lawyer, home, and closing date. This is not financial, legal, or tax advice. Please confirm the numbers with your mortgage professional, lawyer, and me before making decisions.</p>
+</div>
+
+<script>
+(function(){
+  var root = document.currentScript.closest ? document.currentScript.parentNode.querySelector('.awc') : document.querySelector('.awc');
+  if(!root) root = document.querySelector('.awc');
+  var $ = function(id){ return root.querySelector('#'+id); };
+  var ids = ['awc-price','awc-down','awc-rate','awc-amort','awc-tax','awc-ins','awc-condo','awc-util','awc-maint','awc-legal','awc-title','awc-insp','awc-appr','awc-move','awc-repair','awc-income','awc-other'];
+  function num(id){ var v = parseFloat($(id).value); return isNaN(v)?0:v; }
+  function money(n){ return '$'+Math.round(n).toLocaleString('en-CA'); }
+
+  function marginalTax(v, brackets){
+    var tax=0, prev=0;
+    for(var i=0;i<brackets.length;i++){
+      var cap=brackets[i][0], rate=brackets[i][1];
+      if(v>prev){ tax += (Math.min(v,cap)-prev)*rate; prev=cap; } else break;
+    }
+    return tax;
+  }
+  var ONT=[[55000,0.005],[250000,0.01],[400000,0.015],[2000000,0.02],[Infinity,0.025]];
+  var TOR=[[55000,0.005],[250000,0.01],[400000,0.015],[2000000,0.02],[3000000,0.025],[Infinity,0.03]];
+  function provLTT(v){ return marginalTax(v,ONT); }
+  function torLTT(v){ return marginalTax(v,TOR); }
+
+  function minDown(price){
+    if(price<=500000) return price*0.05;
+    if(price<=1500000) return 25000 + (price-500000)*0.10;
+    return price*0.20;
+  }
+
+  function compute(){
+    var price=num('awc-price'), down=num('awc-down'), rate=num('awc-rate'), amort=num('awc-amort');
+    var tax=num('awc-tax'), ins=num('awc-ins'), condo=num('awc-condo'), util=num('awc-util'), maint=num('awc-maint');
+    var legal=num('awc-legal'), title=num('awc-title'), insp=num('awc-insp'), appr=num('awc-appr'), move=num('awc-move'), repair=num('awc-repair');
+    var income=num('awc-income'), other=num('awc-other');
+    var ftb=$('awc-ftb').checked, tor=$('awc-tor').checked;
+
+    var downPct = price>0 ? down/price : 0;
+    $('awc-downhint').textContent = price>0 ? (Math.round(downPct*1000)/10)+'% of price · min. required '+money(minDown(price)) : '';
+
+    // auto repairs = 1% of price if untouched
+    var repEl=$('awc-repair');
+    if(repEl.getAttribute('data-auto')==='1'){ repair=Math.round(price*0.01); repEl.value=repair; }
+    // auto maintenance reserve = ~1% of price / year if untouched
+    var maintEl=$('awc-maint');
+    if(maintEl.getAttribute('data-auto')==='1'){ maint=Math.round(price*0.01/12); maintEl.value=maint; }
+
+    var loanBase=Math.max(price-down,0);
+    var premRate=0;
+    if(price>0 && downPct<0.20){ premRate = downPct<0.10?0.04 : (downPct<0.15?0.031:0.028); }
+    var premium=loanBase*premRate;
+    var pst=premium*0.08;
+    var principal=loanBase+premium;
+
+    var payment=0;
+    if(principal>0 && amort>0){
+      if(rate>0){ var i=Math.pow(1+(rate/100)/2, 2/12)-1; var n=amort*12; payment=principal*i/(1-Math.pow(1+i,-n)); }
+      else payment=principal/(amort*12);
+    }
+
+    var lttRaw = provLTT(price) + (tor?torLTT(price):0);
+    var rebate = ftb ? (Math.min(4000,provLTT(price)) + (tor?Math.min(4475,torLTT(price)):0)) : 0;
+    var ltt = Math.max(lttRaw-rebate,0);
+
+    var taxAdj = tax*(2/12);
+    var utilSetup = 150;
+
+    var cash = down + ltt + pst + legal + title + insp + appr + move + repair + taxAdj + utilSetup;
+    var monthly = payment + tax/12 + ins/12 + condo + util + maint;
+    var emergency = Math.ceil(monthly*3/500)*500;
+    var disposable = income - monthly - other;
+
+    // outputs
+    $('awc-out-cash').textContent = money(cash);
+    $('awc-out-month').textContent = money(monthly);
+    $('awc-out-disp').textContent = money(disposable);
+    $('awc-out-emerg').textContent = money(emergency);
+
+    var tile=$('awc-tile-disp'), lbl=$('awc-disp-lbl'), note=$('awc-disp-note');
+    tile.classList.remove('good','tight','bad');
+    if(disposable<0){ tile.classList.add('bad'); lbl.textContent='⚠️ Monthly shortfall'; note.textContent='Your costs run past your income each month. This home may be too tight for this budget.'; }
+    else if(disposable<1000){ tile.classList.add('tight'); lbl.textContent='💵 Monthly disposable income left'; note.textContent='Not much wiggle room. A surprise bill could sting.'; }
+    else { tile.classList.add('good'); lbl.textContent='💵 Monthly disposable income left'; note.textContent='A healthy cushion for saving and the unexpected.'; }
+
+    // warnings
+    var warns=[];
+    if(price>0 && down<minDown(price)) warns.push('Your down payment is below Canada\'s minimum for this price ('+money(minDown(price))+'). A lender would require at least that much.');
+    if(price>1500000 && downPct<0.20) warns.push('Homes over $1.5M are not eligible for mortgage default insurance, so a 20% down payment is required.');
+    if(disposable<0) warns.push('After the mortgage and all the bills, you\'re short each month. Many buyers qualify for a mortgage they can\'t comfortably live with, so it\'s worth rethinking the price or budget.');
+    var w=$('awc-warn');
+    if(warns.length){ w.classList.remove('hidden'); w.innerHTML='<b>Worth a closer look:</b> '+warns.join(' '); }
+    else w.classList.add('hidden');
+
+    // breakdowns
+    function rows(arr){
+      return arr.map(function(r){ return '<div class="row'+(r[2]?' total':'')+'"><span>'+r[0]+'</span><span>'+money(r[1])+'</span></div>'; }).join('');
+    }
+    var cashRows=[['Down payment',down]];
+    cashRows.push(['Land transfer tax'+(ftb?' (after rebate)':''), ltt]);
+    if(pst>0) cashRows.push(['PST on mortgage insurance', pst]);
+    cashRows.push(['Legal fees', legal]);
+    cashRows.push(['Title insurance', title]);
+    cashRows.push(['Home inspection', insp]);
+    cashRows.push(['Appraisal', appr]);
+    cashRows.push(['Moving costs', move]);
+    cashRows.push(['Initial repairs & setup', repair]);
+    cashRows.push(['Property tax adjustment (est.)', taxAdj]);
+    cashRows.push(['Utility setup (est.)', utilSetup]);
+    cashRows.push(['Total cash before closing', cash, true]);
+    $('awc-bd-cash').innerHTML = rows(cashRows);
+
+    var monRows=[['Mortgage payment', payment]];
+    monRows.push(['Property tax', tax/12]);
+    monRows.push(['Home insurance', ins/12]);
+    monRows.push(['Condo / maintenance fees', condo]);
+    monRows.push(['Utilities', util]);
+    monRows.push(['Maintenance reserve (est.)', maint]);
+    monRows.push(['Total monthly ownership', monthly, true]);
+    $('awc-bd-month').innerHTML = rows(monRows);
+  }
+
+  ids.forEach(function(id){
+    var el=$(id);
+    el.addEventListener('input', function(){
+      if(id==='awc-repair'||id==='awc-maint') el.setAttribute('data-auto','0');
+      compute();
+    });
+  });
+  $('awc-ftb').addEventListener('change',compute);
+  $('awc-tor').addEventListener('change',compute);
+  compute();
+})();
+</script>
+
+</body>
+</html>
