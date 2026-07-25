@@ -17,8 +17,9 @@ body{margin:0;background:#fffdfb;font-family:'Aileron',-apple-system,BlinkMacSys
 .aw-brandbar .aw-back{justify-self:end;color:#FFECD7;font-size:13px;letter-spacing:.05em;text-decoration:none;opacity:.9;white-space:nowrap;}
 .aw-brandbar .aw-back:hover{opacity:1;text-decoration:underline;}
 @media(max-width:640px){.aw-brandbar{grid-template-columns:1fr;justify-items:center;text-align:center;gap:4px;padding:12px 18px;} .aw-brandbar .aw-logo,.aw-brandbar .aw-name,.aw-brandbar .aw-back{justify-self:center;}}
-/* breathing room between the header and the tool */
-.awc{padding-top:40px;}
+/* breathing room around the tool + side padding for mobile */
+.awc{box-sizing:border-box;padding:40px 20px 0;}
+@media(max-width:640px){.awc{padding:26px 16px 0;}}
 .aw-pagefoot{background:#410C1E;color:#FFECD7;text-align:center;padding:30px 20px;margin-top:44px;}
 .aw-pagefoot .aw-logo{font-family:'Italianno',cursive;font-size:46px;color:#FFECD7;display:block;margin-bottom:8px;text-decoration:none;line-height:1;}
 .aw-pagefoot a.aw-link{color:#D8A48F;text-decoration:underline;}
