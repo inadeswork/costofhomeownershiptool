@@ -4,9 +4,36 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Home Buying Cost Tracker | Ade's Work</title>
-<style>body{margin:0;background:#fffdfb;padding:28px 18px;}</style>
+<meta name="description" content="A free Ontario home-buying calculator from Adeife Soetan, REALTOR, CPA. See the real cash you need before closing, your true monthly cost, and what's left over each month.">
+<style>
+@import url('https://fonts.cdnfonts.com/css/aileron');
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600&family=Italianno&display=swap');
+body{margin:0;background:#fffdfb;font-family:'Aileron',-apple-system,BlinkMacSystemFont,'Helvetica Neue',Arial,sans-serif;color:#2b2726;}
+.aw-brandbar{background:#410C1E;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:14px;padding:10px 28px;}
+/* To use your real logo image instead of the text mark: replace the <a class="aw-logo">ade</a>
+   with: <a href="https://www.inadeswork.com"><img src="ade-logo.png" alt="Ade" style="height:46px"></a> */
+.aw-brandbar .aw-logo{font-family:'Italianno',cursive;color:#FFECD7;font-size:52px;line-height:.8;text-decoration:none;justify-self:start;}
+.aw-brandbar .aw-name{justify-self:center;text-align:center;font-family:'Aileron',sans-serif;color:#FFECD7;font-size:14px;letter-spacing:.1em;text-transform:uppercase;}
+.aw-brandbar .aw-back{justify-self:end;color:#FFECD7;font-size:13px;letter-spacing:.05em;text-decoration:none;opacity:.9;white-space:nowrap;}
+.aw-brandbar .aw-back:hover{opacity:1;text-decoration:underline;}
+@media(max-width:640px){.aw-brandbar{grid-template-columns:1fr;justify-items:center;text-align:center;gap:4px;padding:12px 18px;} .aw-brandbar .aw-logo,.aw-brandbar .aw-name,.aw-brandbar .aw-back{justify-self:center;}}
+/* breathing room between the header and the tool */
+.awc{padding-top:40px;}
+.aw-pagefoot{background:#410C1E;color:#FFECD7;text-align:center;padding:30px 20px;margin-top:44px;}
+.aw-pagefoot .aw-logo{font-family:'Italianno',cursive;font-size:46px;color:#FFECD7;display:block;margin-bottom:8px;text-decoration:none;line-height:1;}
+.aw-pagefoot a.aw-link{color:#D8A48F;text-decoration:underline;}
+.aw-pagefoot a.aw-link:hover{color:#FFECD7;}
+.aw-pagefoot .aw-small{font-size:12px;opacity:.65;margin-top:12px;}
+</style>
 </head>
 <body>
+
+<header class="aw-brandbar">
+  <a class="aw-logo" href="https://www.inadeswork.com">ade</a>
+  <div class="aw-name">Adeife Soetan, REALTOR&reg;, CPA</div>
+  <a class="aw-back" href="https://www.inadeswork.com">&larr; Back to inadeswork.com</a>
+</header>
+
 <style>
 @import url('https://fonts.cdnfonts.com/css/aileron');
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700&display=swap');
@@ -18,7 +45,12 @@
 .awc *{box-sizing:border-box;}
 .awc h2,.awc h3,.awc .title{font-family:'Playfair Display',Georgia,serif;color:var(--wine);font-weight:600;}
 .awc .title{font-size:clamp(28px,4vw,40px);line-height:1.1;margin:0 0 .1em;}
-.awc .subtitle{font-style:italic;color:var(--gold);font-family:'Playfair Display',Georgia,serif;font-size:19px;margin:0 0 1.4em;}
+.awc .subtitle{font-style:italic;color:var(--gold);font-family:'Playfair Display',Georgia,serif;font-size:19px;margin:0 0 1.1em;}
+.awc .explain{font-family:'Aileron',sans-serif;font-size:1rem;line-height:1.4;color:#3a2f2b;margin:0 0 1.6em;}
+.awc .explain p{margin:0 0 .5em;}
+.awc .explain strong{color:var(--wine);}
+.awc .explain ul{margin:.1em 0 .55em;padding-left:1.2em;}
+.awc .explain li{margin:.1em 0;}
 
 .awc .panel{border:1px solid var(--line);border-radius:8px;padding:22px 24px;margin:0 0 22px;}
 .awc .panel h3{font-size:20px;margin:0 0 14px;padding-bottom:10px;border-bottom:1px solid var(--line);}
@@ -81,6 +113,16 @@
   <div class="title">Beyond the Down Payment</div>
   <div class="subtitle">The true cost of buying a home in Ontario.</div>
 
+  <div class="explain">
+    <p><strong>Buying a home costs more than just the down payment.</strong> That's why I created this free tool to help you understand the true cost of homeownership before you make an offer. In just a few minutes, you'll discover:</p>
+    <ul>
+      <li>How much cash you'll likely need before closing</li>
+      <li>Your estimated monthly cost of owning a home</li>
+      <li>Whether you'll still have enough disposable income to comfortably enjoy life after covering all your housing expenses</li>
+    </ul>
+    <p>Because buying a home shouldn't leave you wondering if you can afford your life after.</p>
+  </div>
+
   <div class="panel">
     <h3>The Home &amp; Your Mortgage</h3>
     <div class="grid">
@@ -122,7 +164,7 @@
     <h3>Your Monthly Budget</h3>
     <div class="grid">
       <div class="field"><label>Your monthly take-home income</label><div class="inp"><span class="pre">$</span><input type="number" id="awc-income" value="9500" min="0" step="100"></div><span class="hint">Combined, after tax.</span></div>
-      <div class="field"><label>Other monthly expenses</label><div class="inp"><span class="pre">$</span><input type="number" id="awc-other" value="2500" min="0" step="50"></div><span class="hint">Food, car, rent, debts, travel, entertainment.</span></div>
+      <div class="field"><label>Other monthly expenses</label><div class="inp"><span class="pre">$</span><input type="number" id="awc-other" value="2500" min="0" step="50"></div><span class="hint">Food, car, debts, travel, entertainment.</span></div>
     </div>
   </div>
 
@@ -287,6 +329,12 @@
   compute();
 })();
 </script>
+
+<footer class="aw-pagefoot">
+  <a class="aw-logo" href="https://www.inadeswork.com">ade</a>
+  Thinking about buying or selling? <a class="aw-link" href="https://www.inadeswork.com/contact">Let's talk</a>.
+  <div class="aw-small">&copy; Ade's Work</div>
+</footer>
 
 </body>
 </html>
